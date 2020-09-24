@@ -1,0 +1,6 @@
+[30-Mar-2020 21:32:11 America/Recife] PHP Fatal error:  Uncaught PDOException: SQLSTATE[28000] [1045] Access denied for user 'root'@'localhost' (using password: NO) in /home/sistemalanchesdu/public_html/login/functions.php:8
+Stack trace:
+#0 /home/sistemalanchesdu/public_html/login/functions.php(8): PDO->__construct('mysql:host=loca...', 'root', '')
+#1 /home/sistemalanchesdu/public_html/login/validar.php(20): db_connect()
+#2 {main}
+  thrown in /home/sistemalanchesdu/public_html/login/functions.php on line 8
