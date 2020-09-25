@@ -192,11 +192,18 @@ if (!isLoggedIn())
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-        <div class="card shadow mb-4">
+                     <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Pedidos </h1>
+           
+          </div>
+
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
               <button type="button" class="btn btn-success" onclick="location.href='novo_pedido.php'" style="height:30px; font-size: 13px; width:100px; margin: 15px;">Novo <i class="fas fa-plus"></i></button>
             <div class="card-header py-3">
                 
-              <h6 class="m-0 font-weight-bold text-primary">Pedidos em rota</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Pedidos em espera</h6>
             </div>
             <div class="card-body" style="padding: 0">
               <div class="table-responsive">
@@ -204,20 +211,19 @@ if (!isLoggedIn())
                   <thead  class="thead-dark">
                     <tr>
                       <th>Descrição</th>
-                      <th>Motoboy</th>
                       <th>Valor Entrega</th>
                       <th>Valor Pedido</th>
-                      <th>Total</th>
+                      <th>Cliente</th>
                       <th style="width: 210px;">Ações</th>
                     </tr>
                   </thead>
                   <tfoot  class="thead-dark">
                     <tr>
                       <th>Descrição</th>
-                      <th>Motoboy</th>
+                      
                       <th>Valor Entrega</th>
                       <th>Valor Pedido</th>
-                      <th>Total</th>             
+                      <th>Cliente</th>             
                       <th style="width: 210px;">Ações</th>
                     </tr>
                   </tfoot>
@@ -226,79 +232,97 @@ if (!isLoggedIn())
                        
                         include_once 'CRUD/banco.php';
                         $pdo = Banco::conectar();
-                        $sql = 'SELECT * FROM ordem_pedido';
+                        $sql = 'SELECT * FROM ordem_pedido WHERE id_motoboy IS NULL';
                         
                         foreach($pdo->query($sql)as $row)
-                        { ?> 
-                    <tr>
-			             <td><?=$row['descricao']?></td>
-                       <?php 	
-                            $id = $row['id_motoboy'];
-                           $pdo = Banco::conectar();
-                           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                           $sql = "SELECT * FROM cliente where id = ?";
-                           $q = $pdo->prepare($sql);
-                           $q->execute(array($id));
-                           $data = $q->fetch(PDO::FETCH_ASSOC);
-                           Banco::desconectar(); ?>
-                         <td><?=$data['nome']?></td>
+                       
+                        { 
+                      
+                      ?> 
+                        <tr>
+			             <td><?php
+                        
+                     
+                        $pdo = Banco::conectar();
+                        $sql = 'SELECT * FROM pedidoRecente where id = '.$row['id_pedido'].'';
+                        Banco::desconectar();
+                        foreach($pdo->query($sql)as $row2){
+            
+                      ?>
+                          <?=$row2['detalhes']?><br>
+                    <?php } ?></td>
+               
                          
                          <td>
                           
                              R$ <?php $val = $row['valor_entrega'];
                                 echo number_format($val,2,",","");?>
-                        </td>
+                         </td>
                          <td>  
-                             R$ <?php echo number_format($row['valor'],2,",","");?></td>
-                         <td>
-                             R$ <?php  echo number_format($row['valor']+$row['valor_entrega'],2,",","");?></td>
+                             R$ <?php echo number_format($row['valor_pedido'],2,",","");?></td>
+                        <?php
+                                 
+
+                                       
+                                           $pdo = Banco::conectar();
+                                           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                           $sql = "SELECT * FROM cliente where id = ".$row['idCliente']."";
+                                           $q = $pdo->prepare($sql);
+                                           $q->execute();
+                                           $data = $q->fetch(PDO::FETCH_ASSOC);
+                                           Banco::desconectar();
+                                    ?>
+                         <td><?=$data['nome']?></td>
                  
                       <th  style="width: 260px;">
                      <button  data-toggle="modal" data-target="#entregue<?=$row['id']?>"  class="btn btn-success" style="height:30px; font-size: 13px; margin: 1px; width: 100px; float: left; ">Entregue <i class="fa fa-check"></i></button>
                             
-                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal<?=$row['id']?>" style="height:30px; font-size: 13px; margin: 1px; width: 100px; float: left; ">Cancelar <i class="far fa-trash-alt"></i></button></th>
-                         
-                         <div class="modal fade" id="exampleModal<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Cancelar Pedido</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                               Deletar Esse Pedido do Sistema?
+                      </th>
 
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <a href="CRUD/delete_pedido.php?id=<?=$row['id']?>"  class="btn btn-danger">Confirmar</a>
+                          <div class="modal fade" id="entregue<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Marcar Pedido de <?=$data['nome']?> como entregue.</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="CRUD/update_pedido_motoboy.php" method="post">
+                                <div class="form-group">
+                                        <div class="col-md-7">
+                                         <select class="form-control"  name="id_motoboy" id="exampleFormControlSelect1" placeholder="Escolher Motoboy" required>
+                                             <option value="">Selecionar Motoboy...</option>
+                                            <?php
+
+                                            $pdo = Banco::conectar();
+                                            $sql = 'SELECT * FROM motoboy';
+
+                                            foreach($pdo->query($sql)as $row3)
+                                            { ?>
+                                                    <option value="<?=$row3['id']?>">  <?=$row3['nome']?> </option>
+                                             <?php }
+                                            Banco::desconectar();  ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <div class="col">
+                                    <input  name="id_pedido" value="<?=$row['id']?>" type="hidden">
+                                     <input type="submit" value="Ok" class="btn btn-success"/>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar </button>
+                                        </div>
+                                        </div>
+
+                                      </form>
+                                  </div>
+                                  <div class="modal-footer">
+
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                        
-                         <div class="modal fade" id="entregue<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Marcar como entregue</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                               Marcar pedido como entregue?
-
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <a href="CRUD/create_atendido.php?id=<?=$row['id']?>"  class="btn btn-success">Confirmar</a>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
                       </tr>
 	
                 <?php
@@ -315,7 +339,8 @@ if (!isLoggedIn())
               </div>
             </div>
           </div>
-        <!-- /.container-fluid -->
+
+ 
       </div>
       <!-- End of Main Content -->
 

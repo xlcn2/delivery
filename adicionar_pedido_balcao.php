@@ -472,8 +472,8 @@ require 'CRUD/banco.php';
                                     <label class="control-label " for="endereco">Consumo : </label>
                                     <select  class="form-control" name="consumo"  id="exampleFormControlSelect1" placeholder="Pequisar" required>
                                             <option value="">Selecionar...</option>
-                                            <option value="Consumo no Local" >Consumir no Local</option>
-                                            <option value="Levar" >Levar</option>
+                                            <option value="No Local" >No Local</option>
+                                            <option value="Para Levar" >Para Levar</option>
                                     </select>
                                 </div>
                                </div>

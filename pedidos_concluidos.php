@@ -192,64 +192,170 @@ if (!isLoggedIn())
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
+                     <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Home</h1>
+            <h1 class="h3 mb-0 text-gray-800">Pedidos Efetuados</h1>
            
           </div>
 
-          <!-- Content Row -->
-            <div class="row">
-                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='painel_balcao.php'"><i class="fas fa-concierge-bell"></i> Balcão</button>
-                  <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='painel_delivery.php'"><i class="fas fa-hotdog"></i> Delivery</button>
-                   <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='painel_motoboy.php'"><i class="fas fa-clock"></i> Controle de Entrega </button>
-                   
-                </div>
-                        <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Gerenciar</h1>   
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+              <button type="button" class="btn btn-success" onclick="location.href='novo_pedido.php'" style="height:30px; font-size: 13px; width:100px; margin: 15px;">Novo <i class="fas fa-plus"></i></button>
+            <div class="card-header py-3">
+                
+              <h6 class="m-0 font-weight-bold text-primary">Pedidos Entregues</h6>
             </div>
+            <div class="card-body" style="padding: 0">
+              <div class="table-responsive">
+                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                  <thead  class="thead-dark">
+                    <tr>
+                      <th>Descrição</th>
+                      <th>Valor Entrega</th>
+                      <th>Valor Pedido</th>
+                      <th>Cliente</th>
+                      <th>Motoboy</th>
+                      <th style="width: 210px;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tfoot  class="thead-dark">
+                    <tr>
+                      <th>Descrição</th>
+                      
+                      <th>Valor Entrega</th>
+                      <th>Valor Pedido</th>
+                      <th>Cliente</th>
+                      <th>Motoboy</th>
+                      <th style="width: 210px;">Ações</th>
+                    </tr>
+                  </tfoot>
+                  <tbody>
+                    <?php
+                       
+                        include_once 'CRUD/banco.php';
+                        $pdo = Banco::conectar();
+                        $sql = 'SELECT * FROM ordem_pedido WHERE id_motoboy IS NOT NULL';
+                        
+                        foreach($pdo->query($sql)as $row)
+                       
+                        { 
+                      
+                      ?> 
+                        <tr>
+			             <td><?php
+                        
+                     
+                        $pdo = Banco::conectar();
+                        $sql = 'SELECT * FROM pedidoRecente where id = '.$row['id_pedido'].'';
+                        Banco::desconectar();
+                        foreach($pdo->query($sql)as $row2){
             
-            <div class="row">
-            
-                     <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='cliente.php'">Clientes <i class="fas fa-users"></i></button>
-                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='produto.php'"> Produtos <i class="fas fa-hotdog"></i></button>
-                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='categoria.php'">Categorias <i class="fas fa-list-alt"></i></button>
-                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='bairro.php'">Bairros <i class="fas fa-city"></i></button>
-                  <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='motoboy.php'"><i class="fas fa-motorcycle"></i> Motoboy </button>
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='atendente_balcao.php'"><i class="fas fa-users"></i> Atendentes </button>
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='atendente.php'"><i class="fas fa-users"></i> Atendentes Delivery </button>
-           
+                      ?>
+                          <?=$row2['detalhes']?><br>
+                    <?php } ?></td>
+               
+                         
+                         <td>
+                          
+                             R$ <?php $val = $row['valor_entrega'];
+                                echo number_format($val,2,",","");?>
+                         </td>
+                         <td>  
+                             R$ <?php echo number_format($row['valor_pedido'],2,",","");?></td>
+                        <?php
+                                 
+
+                                       
+                                           $pdo = Banco::conectar();
+                                           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                           $sql = "SELECT * FROM cliente where id = ".$row['idCliente']."";
+                                           $q = $pdo->prepare($sql);
+                                           $q->execute();
+                                           $data = $q->fetch(PDO::FETCH_ASSOC);
+                                           Banco::desconectar();
+                                    ?>
+                         <td><?=$data['nome']?></td>
+                               <?php
+                                 
+
+                                       
+                                           $pdo = Banco::conectar();
+                                           $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                           $sql = "SELECT * FROM motoboy where id = ".$row['id_motoboy']."";
+                                           $q = $pdo->prepare($sql);
+                                           $q->execute();
+                                           $data2 = $q->fetch(PDO::FETCH_ASSOC);
+                                           Banco::desconectar();
+                                    ?>
+                         <td><?=$data2['nome']?></td>
+                 
+                      <th  style="width: 260px;">
+                     <button  data-toggle="modal" data-target="#entregue<?=$row['id']?>"  class="btn btn-warning" style="height:30px; font-size: 13px; margin: 1px; width: 100px; float: left; ">Atualizar <i class="fa fa-edit"></i></button>
+                            
+                      </th>
+
+                          <div class="modal fade" id="entregue<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Atualizar Motoboy.</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form action="CRUD/update_pedido_concluido.php" method="post">
+                                <div class="form-group">
+                                        <div class="col-md-7">
+                                         <select class="form-control"  name="id_motoboy" id="exampleFormControlSelect1" placeholder="Escolher Motoboy" required>
+                                             <option value="">Selecionar Motoboy...</option>
+                                            <?php
+
+                                            $pdo = Banco::conectar();
+                                            $sql = 'SELECT * FROM motoboy';
+
+                                            foreach($pdo->query($sql)as $row3)
+                                            { ?>
+                                                    <option value="<?=$row3['id']?>">  <?=$row3['nome']?> </option>
+                                             <?php }
+                                            Banco::desconectar();  ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                    <div class="form-group">
+                                        <div class="col">
+                                    <input  name="id_pedido" value="<?=$row['id']?>" type="hidden">
+                                     <input type="submit" value="Ok" class="btn btn-success"/>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar </button>
+                                        </div>
+                                        </div>
+
+                                      </form>
+                                  </div>
+                                  <div class="modal-footer">
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                      </tr>
+	
+                <?php
+ 
+
 
         
-
-        </div>
-                    <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
-        
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Rotina Diaria</h1>
-           
+	
+                   }
+                        Banco::desconectar();
+                        ?>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-            
-        <div class="row">
-              <button type="button" class="btn bg-gray-800 text-gray-100 btMenu"  onclick="location.href='relatorio.php'">Relatórios <i class="fas fa-chart-line"></i></button>
-           <?php if($data['status']=="Finalizado"){ ?>
-             <a class="btn bg-gray-800 text-gray-100 btMenu" href="#" data-toggle="modal" data-target="#reiniciarModal">
-                  Iniciar Expediente <i class="fas fa-clock"></i>
-                </a>
-            <?php }
-                else{
-            ?>
-            
-             <a style=" witdh: 400px" class="btn bg-gray-800 text-gray-100 btMenu" href="#" data-toggle="modal" data-target="#finalizarModal">
-                  Finalizar Expediente <i class="fas fa-clock"></i>
-                </a>
-            <?php } ?>
-            
-            </div>
-            
 
-        <!-- /.container-fluid -->
+ 
       </div>
       <!-- End of Main Content -->
 

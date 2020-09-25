@@ -523,8 +523,8 @@ require 'CRUD/banco.php';
                                     <select  class="form-control" name="consumo"  id="exampleFormControlSelect1" placeholder="Pequisar" required>
                                             <option value="">Selecionar...</option>
                                              <option value="<?=$data2['consumo']?>"  selected><?=$data2['consumo']?> </option>
-                                            <option value="Consumo no Local" >Consumir no Local</option>
-                                            <option value="Levar" >Levar</option>
+                                            <option value="No Local" >No Local</option>
+                                            <option value="Para Levar" >Para Levar</option>
                                     </select>
                                 </div>
                                </div>

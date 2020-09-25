@@ -1,27 +1,65 @@
                     
              SCOOBY LANCHES
                     
-          24/09/2020 04:32:26
-========================================
+          24/09/2020 23:19:22
                     
-            Valores Diários
-        referentes à 20/09/2020
+        Informações do Pedido:
                     
-                Delivery
                     
-Entregas   Pedidos    Qtd. de Pedidos            
-                                                 
-R$ 75,50   R$ 856,30               34            
-                                        
+             Pedido n°: 2
+                    
+Qtd Cod.Produto              V. UN Total
+2   2   x-bacon               9,50 19,00
+2   2   x-bacon               9,50 19,00
+                        Sub-total: 38,00
 
+=========================================
+=========================================
  
-Total em Pedidos: R$ 931,80
+Dados de atendimento
  
---------------------------------------
+Cliente:  Fatima Berdes
  
-             Balcão
+Atendente: Luciano
  
  
-Qtd. de Pedidos:  
+Valor Total: R$ 38,00 
  
-Total em Pedidos: R$ 0,00
+Pagamento no cartão
+ 
+Consumo: Levar
+ 
+---------------------------------------
+                     
+             SCOOBY LANCHES
+                    
+          24/09/2020 23:19:22
+                    
+        Informações do Pedido:
+                    
+                    
+             Pedido n°: 2
+                    
+Qtd Cod.Produto              V. UN Total
+2   2   x-bacon               9,50 19,00
+2   2   x-bacon               9,50 19,00
+                        Sub-total: 38,00
+
+=========================================
+=========================================
+ 
+Dados de atendimento
+ 
+Cliente:  Fatima Berdes
+ 
+Atendente: Luciano
+ 
+ 
+Valor Total: R$ 38,00 
+ 
+Pagamento no cartão
+ 
+Consumo: Levar
+ 
+---------------------------------------
+ 

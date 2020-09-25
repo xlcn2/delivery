@@ -194,10 +194,8 @@ if (!isLoggedIn())
             
             <div class="row">
                 <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='pedidos_motoboy.php'">Pedidos     <i class="fas fa-hamburger" style="color: white"></i></button>
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='pedidos_atendidos.php'"> Pedidos Efetuados <i class="fas fa-user-check"></i></button>
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='motoboys.php'">Motoboys <i class="fas fa-user-friends"></i></button>
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='bairros.php'">Bairros 
-                <i class="fas fa-city"></i></button>
+                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='pedidos_concluidos.php'"> Pedidos Efetuados <i class="fas fa-user-check"></i></button>
+               
  
         </div>
 
