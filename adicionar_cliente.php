@@ -1,29 +1,12 @@
 <?php
 session_start();
  
-require '../login/init.php';
+require 'login/init.php';
 if (!isLoggedIn())
 {
-    header('Location: ../index.php');
+    header('Location: index.php');
 }
-
-require 'banco.php';
-
-		$id = $_REQUEST['id'];
-       
-
-       $pdo = Banco::conectar();
-       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       $sql = "SELECT * FROM motoboy where id = ?";
-       $q = $pdo->prepare($sql);
-       $q->execute(array($id));
-       $data = $q->fetch(PDO::FETCH_ASSOC);
-       Banco::desconectar();
-
-        
 ?>
-
-
 <html lang="en">
 
 <head>
@@ -37,11 +20,11 @@ require 'banco.php';
   <title><?=$_SESSION['nome']?></title>
 
   <!-- Custom fonts for this template-->
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -104,90 +87,102 @@ require 'banco.php';
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-               
-   
-  <form class="form-horizontal" method="POST">
+         
+
+                    <!-- Content Row -->
+
+                    <form class="form-horizontal" method="POST" action="CRUD/createCliente.php">
                         <fieldset>
 
                             <!-- Form Name -->
-                            <legend>Atualizar Motoboy</legend>
+                            <legend>Cadastrar Novo Cliente</legend>
 
                             <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="txtcodigo_produto_id">Nome : </label>
                                 <div class="col-md-8">
-                                    <input name="nome" type="text" value="<?=$data['nome']?>" placeholder="" class="form-control input-md">
+                                    <input name="nome" type="text" placeholder="" class="form-control input-md">
 
                                 </div>
                             </div>
-                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">Email : </label>
-                                <div class="col-md-8">
-                                    <input name="email" type="text" value="<?=$data['email']?>" placeholder="" class="form-control input-md">
+                             
 
-                                </div>
-                            </div>
-                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">CPF : </label>
-                                <div class="col-md-8">
-                                    <input name="cpf" type="text" value="<?=$data['cpf']?>" placeholder="" class="form-control input-md">
-
-                                </div>
-                            </div>
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label class="col-md-4 control-label" for="txtcodigo_produto_id">Telefone : </label>
                                 <div class="col-md-8">
-                                    <input name="telefone" type="text" value="<?=$data['telefone']?>" placeholder="" class="form-control input-md">
+                                    <input name="telefone" type="text" placeholder="" class="form-control input-md telefone">
 
                                 </div>
                             </div>
+                           
+
+                            <hr>
+                            <legend>Endereço</legend>
+                            <hr>
+                            
+                           
+                            <div class="form-group row">
+                                <div class="col-sm-8">
+                                    <label class="control-label " for="rua">  Rua : </label>
+                                    <input id="logradouro" name="rua" type="text" placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label class="col-md-7 control-label" for="numero">
+                                        Numero: </label>
+                                    <input id="numero" name="numero" type="number" required placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class="col-md-7 control-label" for="complemento"> 
+                                        Complemento : </label>
+                                    <input id="complemento" name="complemento" type="text" placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                                  <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class="col-md-7 control-label" for="complemento"> 
+                                       Ponto de Referência : </label>
+                                    <input name="referencia" type="text"  placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                            </div>
+                             <hr>
+                            <legend>Selecione o Bairro</legend>
+                            <hr>
+                         <div class="form-group  col-md-8">
+                            <label for="exampleFormControlSelect1">Bairros Cadastrados</label>
+                            <select class="form-control" id="exampleFormControlSelect1" name="bairro">
+                                  <?php
+                       
+                        include_once 'CRUD/banco.php';
+                        $pdo = Banco::conectar();
+                        $sql = 'SELECT * FROM bairro';
                         
-                          
+                        foreach($pdo->query($sql)as $row)
+                        { ?>
+                                <option value="<?=$row['id']?>"><?=$row['nome']?></option>
+                              
+                  <?php }
+                        Banco::desconectar();  ?>
+                            </select>
+                          </div>
+                            
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="btnsalvar"></label>
                                 <div class="col-md-8">
                                     <button id="btnsalvar" type="submit" name="btnsalvar" class="btn btn-primary">Salvar
                                     </button>
-                                     <a id="btncancelar" onclick="location.href='../motoboys.php'"
-                                        name="btncancelar" class="btn btn-danger" style="color: white">Cancelar
-                                    </a>
+                                    <button id="btncancelar" onclick="location.href='cliente.php'"
+                                        name="btncancelar" class="btn btn-danger">Cancelar
+                                    </button>
                                 </div>
-                               
                             </div>
-                            
                         </fieldset>
-                    </form>
-        
-        
-
-                     <?php
-            	if ($_POST)
-            {
-
-
-		          $nome= $_POST['nome'];
-                     $cpf = $_POST['cpf'];
-                     $telefone = $_POST['telefone'];
-                     $email = $_POST['email'];
-              
-		
-		
-
-		            // update data
-		   
-                    $pdo = Banco::conectar();
-                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "UPDATE motoboy  set  nome= ?, cpf= ? , telefone= ? , email= ? WHERE id = ?";
-                    $q = $pdo->prepare($sql);
-                    $q->execute(array($nome, $cpf, $telefone, $email, $data['id']));
-                    Banco::desconectar();
-                    echo"<script>  alert('Motoboy Atualizado.');
-                    window.location.replace('../motoboy.php');</script>";
-		
-	}
-            ?>
-
-        
+                        
+            </form>  
+                     
         
 
         </div>
@@ -196,12 +191,11 @@ require 'banco.php';
       </div>
       <!-- End of Main Content -->
 
-     
+    
 
     </div>
     <!-- End of Content Wrapper -->
-
-  </div>
+  
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -222,29 +216,31 @@ require 'banco.php';
         <div class="modal-body">Selecione "OK" para sair do sistema.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="../login/logout.php">Ok</a>
+        <a class="btn btn-primary" href="login/logout.php">Ok</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="../js/sb-admin-2.min.js"></script>
+  <script src="js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="../vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="../js/demo/chart-area-demo.js"></script>
-  <script src="../js/demo/chart-pie-demo.js"></script>
-
+  <script src="js/demo/chart-area-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>
+ 
+    </div>
+   
 </body>
 
 </html>

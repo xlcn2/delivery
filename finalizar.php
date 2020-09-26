@@ -10,6 +10,7 @@
                     $total = 0;
                     $qt_balcao = 0;
                     $total_balcao = 0;
+                    
 
                     $pdo = Banco::conectar();
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -34,7 +35,6 @@
                     $sql = 'SELECT * FROM ordem_pedido_balcao';
                     foreach($pdo->query($sql)as $row)
                         {   $qt_balcao += 1;
-
                             $total_balcao += $row['valor_pedido'];
                         }
 
@@ -51,6 +51,44 @@
                     Banco::desconectar(); 
                     
                     
+                   $pdo = Banco::conectar();
+                   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                   $sql = "SELECT id FROM relatorios ORDER BY id DESC LIMIT 1";
+                   $q = $pdo->prepare($sql);
+                   $q->execute();
+                   $data = $q->fetch(PDO::FETCH_ASSOC);
+                   Banco::desconectar();
+                   $id_relatorio = $data['id'];
+
+
+                    $pdo = Banco::conectar();
+                    $sql = 'SELECT * FROM motoboy';
+                    foreach($pdo->query($sql)as $row){   
+                        $qtd_pedidos = 0;
+                        $total_pedidos =0;
+                        $nome_motoboy = $row['nome'];                 
+                        $pdo = Banco::conectar();
+                        $sql = 'SELECT * FROM ordem_pedido';
+                        foreach($pdo->query($sql)as $row2){  
+                            if($row2['id_motoboy']==$row['id']){
+                                
+                                $qtd_pedidos += 1;
+                                $total_pedidos += $row2['valor_entrega'];
+                       
+                             }
+                            }
+                        
+                            $pdo = Banco::conectar();
+                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                            $sql = "INSERT INTO relatorio_motoboy (id_relatorio, qtd_entregas, nome_motoboy, total_taxas_entrega) VALUES(?,?,?,?)";
+                            $q = $pdo->prepare($sql);
+                            $q->execute(array($id_relatorio,$qtd_pedidos,$nome_motoboy,$total_pedidos));
+                            
+                        
+                           }
+                    Banco::desconectar(); 
+
+
                     $pdo = Banco::conectar();
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $sql = "UPDATE expediente  set  status= ?";

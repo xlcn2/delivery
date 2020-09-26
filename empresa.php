@@ -1,26 +1,26 @@
 <?php
 session_start();
  
-require '../login/init.php';
+require 'login/init.php';
 if (!isLoggedIn())
 {
-    header('Location: ../index.php');
+    header('Location: index.php');
 }
 
-require 'banco.php';
 
-		$id = $_REQUEST['id'];
+require 'CRUD/banco.php';
+
+		
        
 
        $pdo = Banco::conectar();
        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       $sql = "SELECT * FROM motoboy where id = ?";
+       $sql = "SELECT * FROM dados_empresa";
        $q = $pdo->prepare($sql);
-       $q->execute(array($id));
+       $q->execute();
        $data = $q->fetch(PDO::FETCH_ASSOC);
        Banco::desconectar();
 
-        
 ?>
 
 
@@ -34,15 +34,26 @@ require 'banco.php';
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title><?=$_SESSION['nome']?></title>
+  
 
   <!-- Custom fonts for this template-->
-  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template-->
-  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+<style>
+        .btMenu{
+            margin: 10px;
+            width: 225px;
+            height: 100px;
+            font-size: 22px;
+        }
 
+        .sticky-footer{
+
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -51,7 +62,42 @@ require 'banco.php';
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <?php require_once "sidebar.php" ?>
+    <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: yellow" id="accordionSidebar">
+
+      <!-- Sidebar - Brand -->
+     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="painelAdm.php">
+    <img class="img-responsive" width="100%" style="margin-top: 70px" src="img/Logo.png">
+</a>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active" style="margin-top: 70px">
+        <a class="nav-link" href="painelAdm.php">
+          <i class="fas fa-hamburger" style="color: black"></i>
+          <span style="color: black">Inicio</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider">
+
+     
+      <!-- Nav Item - Pages Collapse Menu -->
+ 
+
+     
+    
+
+      <!-- Divider -->
+      <hr class="sidebar-divider d-none d-md-block">
+
+      <!-- Sidebar Toggler (Sidebar) -->
+      <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"  style="color: black; background-color: darkslategrey;"></button>
+      </div>
+
+    </ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -104,13 +150,22 @@ require 'banco.php';
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-               
-   
-  <form class="form-horizontal" method="POST">
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Alterar Senha</h1>
+           
+          </div>
+
+          
+            <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
+            
+            
+            
+             <form class="form-horizontal" method="POST">
                         <fieldset>
 
                             <!-- Form Name -->
-                            <legend>Atualizar Motoboy</legend>
+                            <legend>Atualizar Usuario</legend>
 
                             <!-- Text input-->
                             <div class="form-group">
@@ -121,34 +176,27 @@ require 'banco.php';
                                 </div>
                             </div>
                              <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">Email : </label>
+                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">Usuario : </label>
                                 <div class="col-md-8">
-                                    <input name="email" type="text" value="<?=$data['email']?>" placeholder="" class="form-control input-md">
+                                    <input name="usuario" type="text" value="<?=$data['usuario']?>" placeholder="" class="form-control input-md">
 
                                 </div>
                             </div>
-                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">CPF : </label>
+                           <div class="form-group">
+                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">Senha : </label>
                                 <div class="col-md-8">
-                                    <input name="cpf" type="text" value="<?=$data['cpf']?>" placeholder="" class="form-control input-md">
+                                    <input name="senha" type="text" value="<?=$data['senha']?>" placeholder="" class="form-control input-md">
 
                                 </div>
                             </div>
-                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">Telefone : </label>
-                                <div class="col-md-8">
-                                    <input name="telefone" type="text" value="<?=$data['telefone']?>" placeholder="" class="form-control input-md">
-
-                                </div>
-                            </div>
-                        
+                           
                           
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="btnsalvar"></label>
                                 <div class="col-md-8">
                                     <button id="btnsalvar" type="submit" name="btnsalvar" class="btn btn-primary">Salvar
                                     </button>
-                                     <a id="btncancelar" onclick="location.href='../motoboys.php'"
+                                     <a id="btncancelar" onclick="location.href='painelAdm.php'"
                                         name="btncancelar" class="btn btn-danger" style="color: white">Cancelar
                                     </a>
                                 </div>
@@ -159,44 +207,38 @@ require 'banco.php';
                     </form>
         
         
+            
+        <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
+            
+        
 
                      <?php
             	if ($_POST)
             {
 
 
-		          $nome= $_POST['nome'];
-                     $cpf = $_POST['cpf'];
-                     $telefone = $_POST['telefone'];
-                     $email = $_POST['email'];
-              
-		
-		
+		          $user= $_POST['usuario'];
+                  $senha = $_POST['senha'];
+		           $nome = $_POST['nome'];
 
 		            // update data
 		   
                     $pdo = Banco::conectar();
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "UPDATE motoboy  set  nome= ?, cpf= ? , telefone= ? , email= ? WHERE id = ?";
+                    $sql = "UPDATE dados_empresa  set  usuario= ?,  senha= ?, nome= ?";
                     $q = $pdo->prepare($sql);
-                    $q->execute(array($nome, $cpf, $telefone, $email, $data['id']));
+                    $q->execute(array($user, $senha, $nome));
                     Banco::desconectar();
-                    echo"<script>  alert('Motoboy Atualizado.');
-                    window.location.replace('../motoboy.php');</script>";
+                    echo"<script>  alert('Usuario Atualizado.');
+                    window.location.replace('empresa.php');</script>";
 		
 	}
             ?>
-
-        
-        
-
-        </div>
-        <!-- /.container-fluid -->
-
+          
       </div>
       <!-- End of Main Content -->
 
-     
+
 
     </div>
     <!-- End of Content Wrapper -->
@@ -221,30 +263,30 @@ require 'banco.php';
         </div>
         <div class="modal-body">Selecione "OK" para sair do sistema.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="../login/logout.php">Ok</a>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancela</button>
+          <a class="btn btn-primary" href="login/logout.php">Ok</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="../js/sb-admin-2.min.js"></script>
+  <script src="js/sb-admin-2.min.js"></script>
 
   <!-- Page level plugins -->
-  <script src="../vendor/chart.js/Chart.min.js"></script>
+  <script src="vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-  <script src="../js/demo/chart-area-demo.js"></script>
-  <script src="../js/demo/chart-pie-demo.js"></script>
-
+  <script src="js/demo/chart-area-demo.js"></script>
+  <script src="js/demo/chart-pie-demo.js"></script>
+    </div>
 </body>
 
 </html>

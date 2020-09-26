@@ -6,6 +6,14 @@ if (isLoggedIn())
 {
     header('Location: painelInicial.php');
 }
+    require 'CRUD/banco.php';
+       $pdo = Banco::conectar();
+       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+       $sql = "SELECT * FROM dados_empresa";
+       $q = $pdo->prepare($sql);
+       $q->execute();
+       $data = $q->fetch(PDO::FETCH_ASSOC);
+       Banco::desconectar();
 ?>
 
 <html lang="en">
@@ -18,7 +26,7 @@ if (isLoggedIn())
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SCOOBY LANCHES</title>
+  <title><?=$data['nome']?></title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

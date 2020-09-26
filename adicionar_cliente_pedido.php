@@ -6,15 +6,6 @@ if (!isLoggedIn())
 {
     header('Location: index.php');
 }
-
-     require 'CRUD/banco.php';
-       $pdo = Banco::conectar();
-       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       $sql = "SELECT * FROM expediente";
-       $q = $pdo->prepare($sql);
-       $q->execute();
-       $data = $q->fetch(PDO::FETCH_ASSOC);
-       Banco::desconectar();
 ?>
 <html lang="en">
 
@@ -34,18 +25,7 @@ if (!isLoggedIn())
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
-<style>
-        .btMenu{
-            margin: 10px;
-            width: 225px;
-            height: 100px;
-            font-size: 22px;
-        }
 
-        .sticky-footer{
-
-        }
-    </style>
 </head>
 
 <body id="page-top">
@@ -107,11 +87,15 @@ if (!isLoggedIn())
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-                <form class="form-horizontal" method="POST" action="CRUD/create_motoboy.php">
+         
+
+                    <!-- Content Row -->
+
+                    <form class="form-horizontal" method="POST" action="CRUD/createClientePedido.php">
                         <fieldset>
 
                             <!-- Form Name -->
-                            <legend>Cadastrar Novo Motoboy</legend>
+                            <legend>Cadastrar Novo Cliente</legend>
 
                             <!-- Text input-->
                             <div class="form-group">
@@ -121,58 +105,96 @@ if (!isLoggedIn())
 
                                 </div>
                             </div>
+                             
+
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="txtcodigo_produto_id">Telefone : </label>
                                 <div class="col-md-8">
-                                    <input name="telefone" type="text" placeholder="" class="form-control input-md">
+                                    <input name="telefone" type="text" placeholder="" class="form-control input-md telefone">
 
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">CPF : </label>
-                                <div class="col-md-8">
-                                    <input name="cpf" type="text" placeholder="" class="form-control input-md">
+                           
 
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-4 control-label" for="txtcodigo_produto_id">Email : </label>
-                                <div class="col-md-8">
-                                    <input name="email" type="text" placeholder="" class="form-control input-md">
-
-                                </div>
-                            </div>
+                            <hr>
+                            <legend>Endereço</legend>
+                            <hr>
                             
+                           
+                            <div class="form-group row">
+                                <div class="col-sm-8">
+                                    <label class="control-label " for="rua">  Rua : </label>
+                                    <input id="logradouro" name="rua" type="text" placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-4">
+                                    <label class="col-md-7 control-label" for="numero">
+                                        Numero: </label>
+                                    <input id="numero" name="numero" type="number" required placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                                <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class="col-md-7 control-label" for="complemento"> 
+                                        Complemento : </label>
+                                    <input id="complemento" name="complemento" type="text" placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                                 <div class="col-sm-4 mb-3 mb-sm-0">
+                                    <label class="col-md-7 control-label" for="complemento"> 
+                                       Ponto de Referência : </label>
+                                    <input id="complemento" name="referencia" type="text"  placeholder=""
+                                        class="form-control input-md">
+                                </div>
+                            </div>
+                             <hr>
+                            <legend>Selecione o Bairro</legend>
+                            <hr>
+                         <div class="form-group  col-md-8">
+                            <label for="exampleFormControlSelect1">Bairros Cadastrados</label>
+                            <select class="form-control" id="exampleFormControlSelect1" name="bairro">
+                                  <?php
+                       
+                        include_once 'CRUD/banco.php';
+                        $pdo = Banco::conectar();
+                        $sql = 'SELECT * FROM bairro';
                         
-
-                          
+                        foreach($pdo->query($sql)as $row)
+                        { ?>
+                                <option value="<?=$row['id']?>"><?=$row['nome']?></option>
+                              
+                  <?php }
+                        Banco::desconectar();  ?>
+                            </select>
+                          </div>
+                            
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="btnsalvar"></label>
                                 <div class="col-md-8">
                                     <button id="btnsalvar" type="submit" name="btnsalvar" class="btn btn-primary">Salvar
                                     </button>
-                                     <a id="btncancelar" onclick="location.href='motoboy.php'"
-                                        name="btncancelar" class="btn btn-danger" style="color: white">Cancelar
-                                    </a>
+                                    <button id="btncancelar" onclick="location.href='pedido.php'"
+                                        name="btncancelar" class="btn btn-danger">Cancelar
+                                    </button>
                                 </div>
                             </div>
-                         
-                            
                         </fieldset>
-                    </form>
-        
+                        
+            </form>  
+                     
         
 
-        
+        </div>
         <!-- /.container-fluid -->
+
       </div>
       <!-- End of Main Content -->
 
-     
+       
     </div>
     <!-- End of Content Wrapper -->
-
-  </div>
+  
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -192,45 +214,8 @@ if (!isLoggedIn())
         </div>
         <div class="modal-body">Selecione "OK" para sair do sistema.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancela</button>
-          <a class="btn btn-primary" href="login/logout.php">Ok</a>
-        </div>
-      </div>
-    </div>
-  </div>
-      
- <div class="modal fade" id="reiniciarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Iniciar Expediente?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">Os pedidos recentes do ultimo expediente serão excluidos.</div>
-        <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="reiniciar.php">Reiniciar</a>
-        </div>
-      </div>
-    </div>
-  </div>
-      
-      
- <div class="modal fade" id="finalizarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Finalizar Expediente?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">O expediente será finalizado e será gerado um relatório.</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="finalizar.php">Finalizar</a>
+        <a class="btn btn-primary" href="login/logout.php">Ok</a>
         </div>
       </div>
     </div>
@@ -252,7 +237,27 @@ if (!isLoggedIn())
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+    
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+                                <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
+
+                                 <script>
+                                     jQuery("input.telefone")
+                                        .mask("(99) 9999-9999?9")
+                                        .focusout(function (event) {  
+                                            var target, phone, element;  
+                                            target = (event.currentTarget) ? event.currentTarget : event.srcElement;  
+                                            phone = target.value.replace(/\D/g, '');
+                                            element = $(target);  
+                                            element.unmask();  
+                                            if(phone.length > 10) {  
+                                                element.mask("(99) 99999-999?9");  
+                                            } else {  
+                                                element.mask("(99) 9999-9999?9");  
+                                            }  
+                                     });</script> 
     </div>
+   
 </body>
 
 </html>

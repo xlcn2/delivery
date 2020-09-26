@@ -26,7 +26,7 @@ if (!isLoggedIn())
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Lanche du Gambá</title>
+  <title><?=$_SESSION['nome']?></title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -297,13 +297,7 @@ if (!isLoggedIn())
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-          </div>
-        </div>
-      </footer>
+     
       <!-- End of Footer -->
 
     </div>

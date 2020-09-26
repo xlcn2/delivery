@@ -17,7 +17,7 @@ if (!isLoggedIn())
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Lanche du Gambá</title>
+ 
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -149,6 +149,7 @@ if (!isLoggedIn())
             
                      <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='atualizarSenha.php'">Usuário e Senha <i class="fas fa-lock"></i></button>
                     <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='alterar.php'"> Alterar Logo <i class="fas fa-image"></i></button>
+                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='empresa.php'"> Dados da Empresa <i class="far fa-building"></i></button>
                   
                   
            
@@ -162,15 +163,7 @@ if (!isLoggedIn())
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+     
 
     </div>
     <!-- End of Content Wrapper -->

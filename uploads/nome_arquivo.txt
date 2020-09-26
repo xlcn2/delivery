@@ -1,65 +1,43 @@
                     
-             SCOOBY LANCHES
+                La Chapa
                     
-          24/09/2020 23:19:22
+          26/09/2020 07:42:58
+========================================
                     
-        Informações do Pedido:
+            Valores Diários
+        referentes à 26/09/2020
                     
+                Delivery
                     
-             Pedido n°: 2
-                    
-Qtd Cod.Produto              V. UN Total
-2   2   x-bacon               9,50 19,00
-2   2   x-bacon               9,50 19,00
-                        Sub-total: 38,00
+Entregas   Pedidos    Qtd. de Pedidos            
+                                                 
+R$ 25,00   R$ 163,50                4            
+                                        
 
-=========================================
-=========================================
  
-Dados de atendimento
+Total em Pedidos: R$ 188,50
  
-Cliente:  Fatima Berdes
+--------------------------------------
  
-Atendente: Luciano
+             Balcão
  
  
-Valor Total: R$ 38,00 
+Qtd. de Pedidos:  2
  
-Pagamento no cartão
+Total em Pedidos: R$ 84,50
  
-Consumo: Levar
+--------------------------------------
  
----------------------------------------
-                     
-             SCOOBY LANCHES
-                    
-          24/09/2020 23:19:22
-                    
-        Informações do Pedido:
-                    
-                    
-             Pedido n°: 2
-                    
-Qtd Cod.Produto              V. UN Total
-2   2   x-bacon               9,50 19,00
-2   2   x-bacon               9,50 19,00
-                        Sub-total: 38,00
-
-=========================================
-=========================================
- 
-Dados de atendimento
- 
-Cliente:  Fatima Berdes
- 
-Atendente: Luciano
- 
- 
-Valor Total: R$ 38,00 
- 
-Pagamento no cartão
- 
-Consumo: Levar
- 
----------------------------------------
- 
+             Motoboys
+Nome: Hércules
+Total de Entregas: 1
+Total em Taxas: 6,00
+---
+Nome: Tarcisio
+Total de Entregas: 1
+Total em Taxas: 6,00
+---
+Nome: Luciano
+Total de Entregas: 2
+Total em Taxas: 13,00
+---

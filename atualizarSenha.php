@@ -34,7 +34,7 @@ require 'CRUD/banco.php';
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Lanche du Gambá</title>
+  
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -189,7 +189,7 @@ require 'CRUD/banco.php';
                                 <div class="col-md-8">
                                     <button id="btnsalvar" type="submit" name="btnsalvar" class="btn btn-primary">Salvar
                                     </button>
-                                     <a id="btncancelar" onclick="location.href='../categoria.php'"
+                                     <a id="btncancelar" onclick="location.href='painelAdm.php'"
                                         name="btncancelar" class="btn btn-danger" style="color: white">Cancelar
                                     </a>
                                 </div>
@@ -231,15 +231,7 @@ require 'CRUD/banco.php';
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+
 
     </div>
     <!-- End of Content Wrapper -->

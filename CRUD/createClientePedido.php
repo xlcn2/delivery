@@ -55,7 +55,7 @@ $pdo = Banco::conectar();
        $id = $data['id'];
        
             echo"<script>  alert('Cliente cadastrado.');
-            window.location.replace('../adicionarPedido.php?id=".$id."');</script>";
+            window.location.replace('../adicionar_pedido.php?id=".$id."');</script>";
             
         
     }

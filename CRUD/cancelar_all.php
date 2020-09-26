@@ -31,7 +31,7 @@ require 'banco.php';
     Banco::desconectar();
 
   echo"<script>  alert('Pedido Cancelado com Sucesso.');
-     window.location.replace('../pedidoRecente.php');</script>";
+     window.location.replace('../pedido_recente.php');</script>"; 
   
    
     

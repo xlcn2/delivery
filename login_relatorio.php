@@ -1,36 +1,17 @@
-<?php session_start();
+<?php
+session_start();
  
 require 'login/init.php';
 if (!isLoggedIn())
 {
     header('Location: index.php');
 }
-
-require 'CRUD/banco.php';
-
-		
-       
-
-       $pdo = Banco::conectar();
-       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       $sql = "SELECT * FROM expediente";
-       $q = $pdo->prepare($sql);
-       $q->execute();
-       $data = $q->fetch(PDO::FETCH_ASSOC);
-       Banco::desconectar();
-
-        if($data['status']=="Finalizado"){ 
-         echo"<script>  alert('Inicie o expediente na tela inicial para efetuar novos pedidos.');
-                    window.location.replace('painel_inicial.php');</script>";
-        }
-
-
 ?>
 <html lang="en">
 
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
 
-  
+  <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -105,32 +86,26 @@ require 'CRUD/banco.php';
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
-              <div class="card shadow mb-4">
-              
-            <div class="card-header py-3">
+
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Adicionar Novo Pedido</h1>
+            <h1 class="h3 mb-0 text-gray-800">Bairros</h1>
            
           </div>
 
          
- <!-- DataTales Example -->
+
+        
+          <!-- Page Heading -->
+          
+        
+
+          <!-- DataTales Example -->
           <div class="card shadow mb-4">
-              
-              
-             <div class="card-body">
-                  <div class="mb-1 big">Etapa 1/2</div>
-                  <div class="progress mb-4">
-                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                  </div>
-                  
-                 
-                </div>
-              
+              <button type="button" class="btn btn-success" onclick="location.href='adicionar_bairro.php'" style="height:30px; font-size: 13px; width:100px; margin: 15px;">Adicionar <i class="fas fa-plus"></i></button>
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Selecione o atendente</h6>
-              
+                
+              <h6 class="m-0 font-weight-bold text-primary">Informações sobre os servidores cadastrados</h6>
             </div>
             <div class="card-body" style="padding: 0">
               <div class="table-responsive">
@@ -139,6 +114,7 @@ require 'CRUD/banco.php';
                     <tr>
                       <th>Codigo</th>
                       <th>Nome</th>
+                      <th>Valor de entrega</th>
                       <th style="width: 210px;">Ações</th>
                     </tr>
                   </thead>
@@ -146,30 +122,49 @@ require 'CRUD/banco.php';
                     <tr>
                       <th>Codigo</th>
                       <th>Nome</th>
-                   
-                      
+                      <th>Valor de entrega</th>                 
                       <th style="width: 210px;">Ações</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                 
-                  <?php
+   
+                    <?php
                        
                         include_once 'CRUD/banco.php';
                         $pdo = Banco::conectar();
-                        $sql = 'SELECT * FROM atendente';
+                        $sql = 'SELECT * FROM bairro';
                         
                         foreach($pdo->query($sql)as $row)
                         { ?> <tr>
 			             <td><?=$row['id']?></td>
                           <td><?=$row['nome']?></td>
-                       
+                       <td>R$ <?=number_format($row['valorEntrega'],2,",","")?> </td>
                       
                       <th  style="width: 210px;">
-                      <a  href="adicionar_pedido_balcao.php?id=<?=$row['id']?>"  class="btn btn-success" style="height:30px; font-size: 13px; margin: 1px; width: 180px; float: left; ">Selecionar <i class="fas fa-check"></i></a>
+                      <a  href="CRUD/updateBairro.php?id=<?=$row['id']?>"  class="btn btn-primary" style="height:30px; font-size: 13px; margin: 1px; width: 80px; float: left; ">Editar <i class="far fa-edit"></i></a>
                             
-                    
-                       
+                      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal<?=$row['id']?>" style="height:30px; font-size: 13px; margin: 1px; width: 80px; float: left; ">Excluir <i class="far fa-trash-alt"></i></button></th>
+                         
+                         <div class="modal fade" id="exampleModal<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Deletar Categoria</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Deletar Essa Categoria do Sistema?
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <a href="CRUD/deleteBairro.php?id=<?=$row['id']?>"  class="btn btn-danger">Confirmar</a>
+      </div>
+    </div>
+  </div>
+</div>
                       </tr>
 	
                 <?php
@@ -181,14 +176,14 @@ require 'CRUD/banco.php';
                    }
                         Banco::desconectar();
                         ?>
-                  
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
 
-        
+
+
 
         </div>
         <!-- /.container-fluid -->
@@ -196,11 +191,10 @@ require 'CRUD/banco.php';
       </div>
       <!-- End of Main Content -->
 
-     
+ 
     </div>
     <!-- End of Content Wrapper -->
 
-  </div>
   <!-- End of Page Wrapper -->
 
   <!-- Scroll to Top Button-->
@@ -221,7 +215,7 @@ require 'CRUD/banco.php';
         <div class="modal-body">Selecione "OK" para sair do sistema.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-          <a class="btn btn-primary" href="index.php">Ok</a>
+          <a class="btn btn-primary" href="login/logout.php">Ok</a>
         </div>
       </div>
     </div>
@@ -243,7 +237,8 @@ require 'CRUD/banco.php';
   <!-- Page level custom scripts -->
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+                <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
                 <link rel="stylesheet" href="css/paginacao.css">
                 <script type="text/javascript" src="js/paginacao.js"></script>
 
@@ -252,8 +247,8 @@ require 'CRUD/banco.php';
                         $('#dataTable').dataTable();
                     });
                 </script>
-      </div>
     </div>
-    </body>
+
+</body>
 
 </html>

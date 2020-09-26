@@ -21,6 +21,6 @@
                     $q->execute(array($qtd, $obs, $id));
                     Banco::desconectar();
                   
-                    header ("Location: ../pedidoAnterior.php?id=".$id_cliente."&idPed=".$id_ped);
+                    header ("Location: ../pedido_anterior.php?id=".$id_cliente."&idPed=".$id_ped);
 		
 	}

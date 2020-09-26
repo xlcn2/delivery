@@ -23,4 +23,4 @@ $idPed = $_REQUEST['idPed'];
     Banco::desconectar();
 
     
-header ("Location: ../pedidoAnterior.php?id=".$idCliente."&idPed=".$idPed);
+header ("Location: ../pedido_anterior.php?id=".$idCliente."&idPed=".$idPed);

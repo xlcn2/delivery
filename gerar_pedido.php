@@ -1,7 +1,6 @@
 <?php
+ini_set('display_errors', 0 );
 error_reporting(0);
-ini_set(“display_errors”, 0 );
-/*
 /*
 * Gerar um arquivo .txt para imprimir na impressora Bematech MP-20 MI
 */
@@ -56,7 +55,8 @@ return substr($info, 0, $n_colunas);
 * @param string $onde Onde será adicionar os espaços. I (inicio) ou F (final).
 * @return string
 */
-function addEspacos($string, $posicoes, $onde){
+function addEspacos($string, $posicoes, $onde)
+{
 
 $aux = strlen($string);
 
@@ -114,7 +114,7 @@ $tot_itens = 0;
 
                $pdo = Banco::conectar();
                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-               $sql = "SELECT id FROM pedido_recente_balcao ORDER BY id DESC LIMIT 1";
+               $sql = "SELECT id FROM pedidoRecente ORDER BY id DESC LIMIT 1";
                $q = $pdo->prepare($sql);
                $q->execute();
                $data = $q->fetch(PDO::FETCH_ASSOC);
@@ -125,6 +125,7 @@ $tot_itens = 0;
 
                $id = $_POST['lanche'];
                $quantidade = $_POST['QTD'];
+               $nomelanche = $_POST['nome'];
                $observacao = $_POST['observacao'];
              //desconto
              $desconto_1 = $_POST['desconto'];
@@ -138,7 +139,7 @@ $tot_itens = 0;
 
                     $pdo = Banco::conectar();
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $sql = "DELETE FROM pedido_balcao where idCliente = ?";
+                    $sql = "DELETE FROM pedidoAtual where idCliente = ?";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($_POST['idCliente']));
                     Banco::desconectar();
@@ -187,7 +188,7 @@ $tot_itens = 0;
                    
                 $pdo = Banco::conectar();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO pedido_recente_balcao (dataPedido, idCliente, idLanche, observacaoLanche, detalhes, valorPedido, qtd, id) VALUES(?,?,?,?,?,?,?,?)";
+                $sql = "INSERT INTO pedidoRecente (dataPedido, idCliente, idLanche, observacaoLanche, detalhes, valorPedido, qtd, id) VALUES(?,?,?,?,?,?,?,?)";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($datahj,$idCliente, $idLanche, $obs, $lanche,$valorP,$quant,$idPedidoRecente));
                 Banco::desconectar(); 
@@ -240,24 +241,89 @@ $txt_valor_total = $espacos.$aux_valor_total;
 
 $txt_rodape[] = ' '; // força pular uma linha
 
-
-
-$txt_rodape[] = 'Dados de atendimento';
+$txt_rodape[] = 'Dados do Cliente';
 
 $txt_rodape[] = ' ';
 
-$txt_rodape[] = 'Cliente: '.$_POST['nome_cliente'];
+$txt_rodape[] =  'Nome: '.$_POST['nome'].'';
+    
+$txt_rodape[] =  'Telefone: '.$_POST['telefone'];
 
-$txt_rodape[] = ' '; 
+$texto = $_POST['endereco'];
+$tam = strlen($_POST['endereco']);
+
+               if($tam>27){
+                $valor =  $tam - 27;
+                $texto2 = substr($texto, 0, strlen($texto) - $valor);
+                $txt_rodape[] =  'Endereço: '.$texto2;
+               }
+    else{
+                $txt_rodape[] =  'Endereço: '.$_POST['endereco']; 
+    }
 
 
-$txt_rodape[] = 'Atendente: '.$_POST['nome_atendente'];
+$tam = strlen($_POST['endereco']);
+               if($tam>27){
+                    $restoObs = substr($_POST['endereco'], 27);
+                    $txt_rodape[] = $restoObs;       
+               }
+    
+
+
+$txt_rodape[] =  'Bairro: '.$_POST['bairro'];
+
+$texto = $_POST['complemento'];
+$tam = strlen($_POST['complemento']);
+
+               if($tam>24){
+                $valor =  $tam - 24;
+                $texto2 = substr($texto, 0, strlen($texto) - $valor);
+                $txt_rodape[] =  'Complemento: '.$texto2;
+               }
+    else{
+                $txt_rodape[] =  'Complemento: '.$_POST['complemento']; 
+    }
+
+
+$tam = strlen($_POST['complemento']);
+               if($tam>24){
+                    $restoObs = substr($_POST['complemento'], 24);
+                    $txt_rodape[] = $restoObs;       
+               }
+
+
+
+
+$texto = $_POST['referencia'];
+$tam = strlen($_POST['referencia']);
+
+               if($tam>24){
+                $valor =  $tam - 24;
+                $texto2 = substr($texto, 0, strlen($texto) - $valor);
+                $txt_rodape[] =  'Referencia: '.$texto2;
+               }
+    else{
+                $txt_rodape[] =  'Referencia: '.$_POST['referencia']; 
+    }
+
+
+$tam = strlen($_POST['referencia']);
+               if($tam>24){
+                    $restoObs = substr($_POST['referencia'], 24);
+                    $txt_rodape[] = $restoObs;       
+               }
+
+$txt_rodape[] = 'Atendente: '.$_POST['atendente'];
+
+$entreg = number_format($_POST['valor'],2,",","");
+
+$txt_rodape[] = 'Valor da Entrega: R$ '.$entreg.' ';
 
 
 
 $txt_rodape[] = ' '; // força pular uma linha
 
-$total = $tot_itens;
+$total = $tot_itens + $_POST['valor'];
 
 $txt_rodape[] = ' '; // força pular uma linha
 
@@ -291,20 +357,16 @@ $txt_rodape[] = 'Troco: '.$trc.' R$';
 
 $txt_rodape[] = ' '; // força pular uma linha
 
-$txt_rodape[] = 'Consumo: '.$_POST['consumo'];
-
-$txt_rodape[] = ' '; // força pular uma linha
-
 $txt_rodape[] = '---------------------------------------';
 
 $txt_rodape[] = ' '; // força pular uma linha
 
 
     if($_POST){
-        
+        $nome = $_POST['nome'];
         
            
-            
+             $entrega = $_POST['valor'];
 
             $pdo = Banco::conectar();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -319,13 +381,19 @@ $txt_rodape[] = ' '; // força pular uma linha
         
            
             
-           
+            $pdo = Banco::conectar();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "UPDATE IGNORE cliente  set  ultimoPedido= ? WHERE id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array(1, $idCliente));
+            Banco::desconectar();
+          
           
            
         //selecionar ultimo codigo adicionado e inserir o proximo
             $hora = date('h:i:s');
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "SELECT codigo FROM ordem_pedido_balcao ORDER BY codigo DESC LIMIT 1";
+            $sql = "SELECT codigo FROM ordem_pedido ORDER BY codigo DESC LIMIT 1";
             $q = $pdo->prepare($sql);
             $q->execute();
             $data = $q->fetch(PDO::FETCH_ASSOC);
@@ -335,9 +403,9 @@ $txt_rodape[] = ' '; // força pular uma linha
         //inserir pedido a lista diária      
             $pdo = Banco::conectar();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO ordem_pedido_balcao (id_pedido, idCliente,  troco, hora, codigo, data_pedido, valor_pedido, valor_entrega, valor_itens, desconto, atendente, consumo, cliente) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $sql = "INSERT INTO ordem_pedido (id_pedido, idCliente, atendente, troco, hora, codigo, data_pedido, valor_pedido, valor_entrega, valor_itens, desconto) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
             $q = $pdo->prepare($sql);
-            $q->execute(array($idPedidoRecente, $idCliente,$_POST['troco'],$hora,$codigo,$expediente,$total, 0 ,$tot_itens, $desconto,$_POST['nome_atendente'],$_POST['consumo'],$_POST['nome_cliente']));
+            $q->execute(array($idPedidoRecente, $idCliente,$_POST['atendente'],$_POST['troco'],$hora,$codigo,$expediente,$total, $entrega,$tot_itens, $desconto));
             Banco::desconectar();
            
         
@@ -352,7 +420,20 @@ $txt_rodape[] = ' '; // força pular uma linha
         
         
         
-      
+        //atualizar informações do cliente
+            $nomeBairro = $_POST['bairro'];
+		    $nome= $_POST['nome'];
+            $telefone= $_POST['telefone'];
+            $endereco = $_POST['endereco'];
+            $complemento = $_POST['complemento'];
+            $referencia = $_POST['referencia'];		           
+		  
+            $pdo = Banco::conectar();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "UPDATE cliente  set  nome= ?, telefone=?, endereco=?,  bairro=?, Complemento=?, referencia=?  WHERE id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($nome, $telefone, $endereco, $nomeBairro, $complemento, $referencia, $idCliente));
+            Banco::desconectar();
                    
 
 

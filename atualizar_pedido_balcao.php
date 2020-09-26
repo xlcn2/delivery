@@ -87,7 +87,8 @@ $txt_valor_total = '';
 $txt_rodape = array();
 
 $txt_cabecalho[] = ' ';
-$txt_cabecalho[] = 'SCOOBY LANCHES';
+session_start();
+$txt_cabecalho[] = $_SESSION['nome'];
 
 
 $txt_cabecalho[] = ' ';

@@ -25,7 +25,7 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <?php require_once "sidebar.php" ?>
+   <?php require_once "sidebar.php" ?>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -113,7 +113,7 @@
                    $pdo = Banco::conectar();
               
               
-                   $sql = 'SELECT * FROM ordem_pedido_balcao where data_pedido like "'.$expediente.'" ';
+                   $sql = 'SELECT * FROM ordem_pedido where data_pedido like "'.$expediente.'" ';
                           $qtDiaria = 0; 
                         foreach($pdo->query($sql)as $row)
                         {   $qtDiaria += 1;
@@ -133,8 +133,8 @@
               ?>
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">Selecione o Cliente Para a Entrega</h6>
-            
-               <button type="button" class="btn btn-success" onclick="location.href='pedido_balcao.php'" style="height:30px; font-size: 13px; width:150px; margin: 15px;">Novo Pedido <i class="fas fa-plus"></i></button>
+             <button type="button" class="btn btn-success" onclick="location.href='adicionar_cliente_pedido.php'" style="height:30px; font-size: 13px; width:150px; margin: 15px;">Adicionar Cliente <i class="fas fa-plus"></i></button>
+               <button type="button" class="btn btn-success" onclick="location.href='pedido.php'" style="height:30px; font-size: 13px; width:150px; margin: 15px;">Novo Pedido <i class="fas fa-plus"></i></button>
                 
                 <div class="btn " style="height:30px; font-size: 13px; margin: 15px; float: right;  font-size: 20px">   <?php if($exp['status']=="Finalizado"){ ?> <b>Expediente Finalizado - </b>  <?php }?><b>Pedidos Efetuados: <?= $qtDiaria?></b> </div>
             </div>
@@ -145,6 +145,7 @@
                     <tr>
                       
                       <th>n°</th>
+                      <th>Telefone</th>
                       <th>Cliente</th>
                       <th>Pedido</th>
                         <th>Dia</th>
@@ -161,7 +162,7 @@
                        
                         include_once 'CRUD/banco.php';
                         $pdo = Banco::conectar();
-                        $sql = 'SELECT * FROM ordem_pedido_balcao ORDER BY codigo DESC';
+                        $sql = 'SELECT * FROM ordem_pedido ORDER BY codigo DESC';
                         Banco::desconectar();
                         foreach($pdo->query($sql)as $row){ 
                       ?>
@@ -171,7 +172,7 @@
                            $idCliente = $row['idCliente'];
                            $pdo = Banco::conectar();
                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                           $sql = "SELECT * FROM atendente where id = ?";
+                           $sql = "SELECT * FROM cliente where id = ?";
                            $q = $pdo->prepare($sql);
                            $q->execute(array($idCliente));
                            $data = $q->fetch(PDO::FETCH_ASSOC);
@@ -179,13 +180,14 @@
 
                          ?>
                       <td><?=$row['codigo']?></td>  
-                      <td><?=$row['cliente']?></td>
+                      <td><?=$data['telefone']?></td>
+                      <td><?=$data['nome']?></td>
                     <td>  
                        <?php
                         
                         include_once 'CRUD/banco.php';
                         $pdo = Banco::conectar();
-                        $sql = 'SELECT * FROM pedido_recente_balcao where id = '.$row['id_pedido'].'';
+                        $sql = 'SELECT * FROM pedidoRecente where id = '.$row['id_pedido'].'';
                         Banco::desconectar();
                         foreach($pdo->query($sql)as $row2){
                          
@@ -211,7 +213,7 @@
                             }else{?>
                                 
                             
-                     <a placeholder="excluir"  href="pedido_anterior_balcao.php?id=<?=$data['id']?>&idPed=<?=$row['id_pedido']?>"  class="btn btn-secondary" style="height:30px; font-size: 13px; margin: 1px; width: 100px; float: left; ">Alterar <i class="fas fa-edit"></i></a>
+                     <a placeholder="excluir"  href="pedido_anterior.php?id=<?=$data['id']?>&idPed=<?=$row['id_pedido']?>"  class="btn btn-secondary" style="height:30px; font-size: 13px; margin: 1px; width: 100px; float: left; ">Alterar <i class="fas fa-edit"></i></a>
                     <button data-toggle="modal" data-target="#cancelarModal<?=$row['id']?>"   class="btn btn-warning" style="height:30px; font-size: 13px; margin: 1px; width: 95px; float: left; color: #4F4F4F; "> Cancelar <i class="fas fa-minus-circle"></i> </button>
                                 <div class="modal fade" id="cancelarModal<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -225,7 +227,7 @@
                                 <div class="modal-body">Ao prosseguir os dados desse pedido serão excluidos do sistema e do relatório dário.</div>
                                 <div class="modal-footer">
                                   <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                                  <a class="btn btn-warning" href="CRUD/cancelar_balcao.php?id=<?=$row['id_pedido']?>&idPed=<?=$row['id_pedido']?>" style="color: #4F4F4F"> Prosseguir</a>
+                                  <a class="btn btn-warning" href="CRUD/cancelar_all.php?id=<?=$row['id_pedido']?>&idPed=<?=$row['id_pedido']?>" style="color: #4F4F4F"> Prosseguir</a>
                                 </div>
                               </div>
                             </div>
@@ -259,7 +261,7 @@
       </div>
       <!-- End of Main Content -->
 
-    
+   
     </div>
     <!-- End of Content Wrapper -->
 

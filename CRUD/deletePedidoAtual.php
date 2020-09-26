@@ -21,4 +21,4 @@ require 'banco.php';
     $q->execute(array($id));
     Banco::desconectar();
     
-header ("Location: ../adicionarPedido.php?id=".$idCliente);
+header ("Location: ../adicionar_pedido.php?id=".$idCliente);

@@ -15,6 +15,14 @@ if (!isLoggedIn())
        $q->execute();
        $data = $q->fetch(PDO::FETCH_ASSOC);
        Banco::desconectar();
+
+        $pdo = Banco::conectar();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT * FROM expediente";
+        $q = $pdo->prepare($sql);
+        $q->execute();
+        $exp = $q->fetch(PDO::FETCH_ASSOC);
+        Banco::desconectar();
 ?>
 <html lang="en">
 
@@ -26,7 +34,7 @@ if (!isLoggedIn())
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Lanche du Gambá</title>
+  <title><?=$_SESSION['nome']?></title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -54,92 +62,7 @@ if (!isLoggedIn())
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: yellow" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="painelInicial.php">
-    <img class="img-responsive" width="100%" style="margin-top: 70px" src="img/Logo.png">
-</a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active" style="margin-top: 70px">
-        <a class="nav-link" href="painelInicial.php">
-          <i class="fas fa-hamburger" style="color: black"></i>
-          <span style="color: black">Inicio</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading" style="color: darkslategrey">
-        Gerenciadores
-      </div>
-         <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-         <i class="fas fa-hamburger" style="color: black"></i>
-          <span  style="color: black">Movimentação</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Adicionar:</h6>
-            <a class="collapse-item" href="pedido.php">Pedido</a>
-          </div>
-        </div>
-      </li>
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-plus"  style="color: black"></i> 
-          <span  style="color: black">Gerenciar</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Cadastrar:</h6>
-              <a class="collapse-item" href="atendente.php">Atendentes</a>
-            <a class="collapse-item" href="cliente.php">Clientes</a>
-            <a class="collapse-item" href="produto.php">Produtos</a>
-            <a class="collapse-item" href="categoria.php">Categorias</a>
-            <a class="collapse-item" href="bairro.php">Bairros</a>
-          </div>
-        </div>
-      </li>
-
-     
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading" style="color: darkslategrey">
-        Diário
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
- 
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="relatorio.php">
-          <i class="fas fa-fw fa-chart-area"  style="color: black"></i>
-          <span  style="color: black">Relatório</span></a>
-      </li>
-
-    
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"  style="color: black; background-color: darkslategrey;"></button>
-      </div>
-
-    </ul>
+   <?php require_once "sidebar.php" ?>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -194,16 +117,16 @@ if (!isLoggedIn())
 
                      <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Pedidos Efetuados</h1>
+            <h1 class="h3 mb-0 text-gray-800">Pedidos Efetuados </h1>
            
           </div>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
-              <button type="button" class="btn btn-success" onclick="location.href='novo_pedido.php'" style="height:30px; font-size: 13px; width:100px; margin: 15px;">Novo <i class="fas fa-plus"></i></button>
+             <button type="button" class="btn btn-secondary" onclick="location.href='painel_motoboy.php'" style="height:30px; font-size: 13px; width:110px; margin: 15px;"><i class="fas fa-arrow-left"></i> Voltar</button>
             <div class="card-header py-3">
                 
-              <h6 class="m-0 font-weight-bold text-primary">Pedidos Entregues</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Pedidos Entregues <?php if($exp['status']=="Finalizado"){ ?>  - Expediente Finalizado  <?php }?></h6>
             </div>
             <div class="card-body" style="padding: 0">
               <div class="table-responsive">
@@ -290,8 +213,11 @@ if (!isLoggedIn())
                          <td><?=$data2['nome']?></td>
                  
                       <th  style="width: 260px;">
+                            <?php if($exp['status']=="Finalizado"){
+                                
+                            }else{?>
                      <button  data-toggle="modal" data-target="#entregue<?=$row['id']?>"  class="btn btn-warning" style="height:30px; font-size: 13px; margin: 1px; width: 100px; float: left; ">Atualizar <i class="fa fa-edit"></i></button>
-                            
+                        <?php } ?>    
                       </th>
 
                           <div class="modal fade" id="entregue<?=$row['id']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -359,15 +285,7 @@ if (!isLoggedIn())
       </div>
       <!-- End of Main Content -->
 
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
+  
     </div>
     <!-- End of Content Wrapper -->
 
@@ -445,12 +363,18 @@ if (!isLoggedIn())
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="vendor/chart.js/Chart.min.js"></script>
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+                <link rel="stylesheet" href="css/paginacao.css">
+                <script type="text/javascript" src="js/paginacao.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="js/demo/chart-area-demo.js"></script>
-  <script src="js/demo/chart-pie-demo.js"></script>
+                <script>
+                    $(document).ready(function() {
+                        $('#dataTable').dataTable();
+                    });
+                </script>
+
+      
     </div>
 </body>
 

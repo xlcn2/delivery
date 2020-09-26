@@ -52,4 +52,4 @@
 
                     
                     echo"<script>  alert('Expediente Iniciado.');
-                    window.location.replace('painelInicial.php');</script>";
+                    window.location.replace('painel_inicial.php');</script>";

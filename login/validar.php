@@ -53,7 +53,19 @@ else{
  session_start();
 $_SESSION['logged_in'] = true;
 $_SESSION['user'] = $user['user'];
+        
+       require '../CRUD/banco.php';
+       $pdo = Banco::conectar();
+       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+       $sql = "SELECT * FROM dados_empresa";
+       $q = $pdo->prepare($sql);
+       $q->execute();
+       $data = $q->fetch(PDO::FETCH_ASSOC);
+       Banco::desconectar();
+    
+    $_SESSION['nome'] = $data['nome'];
+    $_SESSION['usuario'] = $data['usuario'];
+    $_SESSION['senha'] = $data['senha'];
 
-
-header('Location: ../painelInicial.php');
+header('Location: ../painel_inicial.php');
 }

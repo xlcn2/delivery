@@ -10,26 +10,18 @@ if (!isLoggedIn())
 require 'CRUD/banco.php';
 
 		$id = $_REQUEST['id'];
-       $idPed = $_REQUEST['idPed'];
        
 
        $pdo = Banco::conectar();
        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       $sql = "SELECT * FROM atendente where id = ?";
+       $sql = "SELECT * FROM cliente where id = ?";
        $q = $pdo->prepare($sql);
        $q->execute(array($id));
        $data = $q->fetch(PDO::FETCH_ASSOC);
        Banco::desconectar();
-
-
-        $pdo = Banco::conectar();
-       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-       $sql = "SELECT * FROM ordem_pedido_balcao where id_pedido = ?";
-       $q = $pdo->prepare($sql);
-       $q->execute(array($idPed));
-       $data2 = $q->fetch(PDO::FETCH_ASSOC);
-       Banco::desconectar();
-
+      
+      
+                            
         
 ?>
 <html lang="en">
@@ -73,9 +65,12 @@ require 'CRUD/banco.php';
     }
     
     #order-total { font-weight: bold; font-size: 21px; width: 110px; }
-    #order-table td .total-box, .total-box, #frete { border-radius: 6px; font-weight: bold; border: 3px solid green; width: 70px; padding: 3px; margin: 5px 0 5px 0; text-align: center; font-size: 14px; }
+    #order-table td .total-box, .total-box, #frete { border-radius: 6px; font-weight: bold; border: 2px solid green; width: 70px; padding: 3px; margin: 5px 0 5px 0; text-align: center; font-size: 14px; }
 
+    
+    
   
+
 .span_pseudo, .chiller_cb span:before, .chiller_cb span:after {
   content: "";
   display: inline-block;
@@ -149,6 +144,7 @@ require 'CRUD/banco.php';
   bottom: 0.35rem;
   left: 0.2rem;
 }
+
     </style>
     
         
@@ -161,92 +157,7 @@ require 'CRUD/banco.php';
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav sidebar sidebar-dark accordion" style="background-color: yellow" id="accordionSidebar">
-
-      <!-- Sidebar - Brand -->
-     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="painelInicial.php">
-    <img class="img-responsive" width="100%" style="margin-top: 70px" src="img/Logo.png">
-</a>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
-
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active" style="margin-top: 70px">
-        <a class="nav-link" href="painelInicial.php">
-          <i class="fas fa-hamburger" style="color: black"></i>
-          <span style="color: black">Inicio</span></a>
-      </li>
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading" style="color: darkslategrey">
-        Gerenciadores
-      </div>
-         <!-- Nav Item - Utilities Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-         <i class="fas fa-hamburger" style="color: black"></i>
-          <span  style="color: black">Movimentação</span>
-        </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Adicionar:</h6>
-            <a class="collapse-item" href="pedido.php">Pedido</a>
-          </div>
-        </div>
-      </li>
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-plus"  style="color: black"></i> 
-          <span  style="color: black">Cadastro</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Cadastrar:</h6>
-            <a class="collapse-item" href="atendente.php">Atendentes</a>
-            <a class="collapse-item" href="cliente.php">Clientes</a>
-            <a class="collapse-item" href="produto.php">Produtos</a>
-            <a class="collapse-item" href="categoria.php">Categorias</a>
-            <a class="collapse-item" href="bairro.php">Bairros</a>
-          </div>
-        </div>
-      </li>
-
-     
-
-      <!-- Divider -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading" style="color: darkslategrey">
-        Diário
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
- 
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="relatorio.php">
-          <i class="fas fa-fw fa-chart-area"  style="color: black"></i>
-          <span  style="color: black">Relatório</span></a>
-      </li>
-
-    
-
-      <!-- Divider -->
-      <hr class="sidebar-divider d-none d-md-block">
-
-      <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"  style="color: black; background-color: darkslategrey;"></button>
-      </div>
-
-    </ul>
+ <?php require_once "sidebar.php" ?>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -304,14 +215,13 @@ require 'CRUD/banco.php';
                 </div>
             <div class="row"></div>
               
-        
+ <!-- Painel de adicionar pedidos  /////////////////////////-->         
           <div class= "pedidos" style=" ">
               
-                  <form method="post" class="form-horizontal" style="margin: 10px;" action="CRUD/create_pedido_anterior_balcao.php">
-                <legend>Alterar Pedido:</legend>
+                  <form method="post" class="form-horizontal" style="margin: 10px;" action="CRUD/createPedidoAtual.php">
+                <legend>Escolher lanche:</legend>
                 
                    <input name="idCliente" hidden value="<?=$id?>" type="text" placeholder="" class="form-control input-md telefone">
-                      <input name="idPed" hidden value="<?=$idPed?>" type="text" placeholder="" class="form-control input-md telefone">
                 
                  <div style="float: left; margin-right: 15px;">
                     <input name="qtd" placeholder="Qtd" type="text" class="num-pallets-input form-control input-md" style="width: 60px" id="turface-pro-league-num-pallets" required>
@@ -340,13 +250,13 @@ require 'CRUD/banco.php';
                         </select>
                 </div>
                 
-               
-                                       
+                
+                            
                 
                                         
                                         
                 <div style="float: left; margin-right: 15px;">
-                    <input name="observacao" placeholder="Observação" maxlength="38" style="width: 170px" type="text" placeholder="" class="form-control input-md">
+                    <input name="observacao"  maxlength="38" placeholder="Observação" style="width: 170px" type="text" placeholder="" class="form-control input-md">
                 </div>
                                         
 
@@ -358,7 +268,7 @@ require 'CRUD/banco.php';
               
               <div  style="width: 100%">⠀</div>
                       <!-- Content Row -->
-                    <form class="form-horizontal" id="my_form" method="POST" style="with:100%; margin-top:50px" action="atualizar_pedido_balcao.php"  style="">
+                    <form class="form-horizontal" id="my_form" method="POST" style="with:100%; margin-top:50px" action="gerar_pedido.php"  style="">
                         <fieldset>
                         
                        
@@ -370,14 +280,15 @@ require 'CRUD/banco.php';
                                  
                                                        
               
-                                 
+<!-- Tabela de Pedidos /////////////////////////-->      
                                     
                                  <table  id="tabela" class="table  table-striped" width="100%">
                                    
                                      <thead class="thead-dark">
                                      <tr>
+                                         
                                          <th style="text-align: center">Lanche</th>
-                                            <th  style="text-align: center">Valor</th>
+                                            <th  style="text-align: center"> Valor</th>
                                           <th style="text-align: center"></th>
                                          <th style="text-align: center">Quantidade</th>
                                           <th style="text-align: center"></th>
@@ -392,10 +303,10 @@ require 'CRUD/banco.php';
                                      <?php
                                            include_once 'CRUD/banco.php';
                                             $pdo = Banco::conectar();
-                                            $sql = 'SELECT * FROM pedido_recente_balcao';
+                                            $sql = 'SELECT * FROM pedidoAtual';
                                              $subtotal = 0;
                                             foreach($pdo->query($sql) as $row1){ 
-                                            if($row1['id']==$idPed){ ?>
+                                            if($row1['idCliente']==$id){ ?>
                                     
                                      <tr>
                                          
@@ -425,57 +336,10 @@ require 'CRUD/banco.php';
                                          <td>
                                            <input name="observacao[]"  maxlength="38" value="<?=$row1['observacaoLanche']?>"style="width: 170px" type="text" placeholder="" class="form-control input-md" readonly> 
                                          </td>
-                                           <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar_anterior<?=$row1['id_individual']?>" style="height:30px; font-size: 13px; margin: 1px;  float: left; "><i class="fas fa-edit"></i></button>
-                                               
-                                               <a href="CRUD/delete_pedido_recente_balcao.php?id=<?=$row1['id_individual']?>&idCliente=<?=$id?>&idPed=<?=$idPed?>"  class="btn btn-danger"><i class="fas fa-times"></i></a></td>
-                                </tr>
-                                    
-
-                                           
-                                   <?php
-                                            } }  Banco::desconectar();  
-                                    ?>
-                                     
-                                        
-                                     <?php
-                                           include_once 'CRUD/banco.php';
-                                            $pdo = Banco::conectar();
-                                            $sql = 'SELECT * FROM pedido_balcao';
-                                        
-                                            foreach($pdo->query($sql) as $row1){ 
-                                            if($row1['id_ped']==$idPed){ ?>
-                                    
-                                     <tr>
-                                         
-                                    
-                                         <td class="product-title">
-                                           <?=$row1['detalhes']?>
-                                            <input name="lanche[]" hidden value="<?=$row1['idLanche']?>" type="text"  > 
-                                        </td>
-                                        
-                                     
-                                         <td class="price-per-pallet"><span><?=$row1['valorPedido']?></span> R$</td>
-                                   
-                                        <td class="times">X</td>
-                                        <td class="num-pallets">
-                                        <input name="QTD[]" placeholder="Qtd" value="<?=$row1['qtd']?>" type="text" class="num-pallets-input form-control input-md" style="width: 60px" id="turface-pro-league-num-pallets" required readonly> 
-                                         </td>
-                                           <?php 
-                                         $valor = (float)$row1['valorPedido'];
-                                         $quant = $row1['qtd'];
-                                         
-                                         $totalItem = $valor * $quant;
-                                         $subtotal = $subtotal + $totalItem;
-                                         ?>
-                                         <td class="equals">=</td>
-                                         <td class="row-total"><input type="text"  value="<?=$totalItem?>" style="width: 80px" class="row-total-input form-control input-md"  disabled="disabled"> </td>
-                                        
-                                         <td>
-                                           <input name="observacao[]"  maxlength="38" value="<?=$row1['observacaoLanche']?>"style="width: 170px" type="text" placeholder="" class="form-control input-md" readonly> 
-                                         </td>
                                            <td>
-                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editar<?=$row1['id_individual']?>" style="height:30px; font-size: 13px; margin: 1px;  float: left; "><i class="fas fa-edit"></i></button>
-                                               <a href="CRUD/delete_pedido_anterior_balcao.php?id=<?=$row1['id_individual']?>&idCliente=<?=$id?>&idPed=<?=$idPed?>"  class="btn btn-danger"><i class="fas fa-times"></i></a></td>
+                                               <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#editar<?=$row1['id_individual']?>" style="height:30px; font-size: 13px; margin: 1px;  float: left; "><i class="fas fa-edit"></i></button>
+                                               
+                                               <a href="CRUD/deletePedidoAtual.php?id=<?=$row1['id_individual']?>&idCliente=<?=$id?>"  class="btn btn-danger"><i class="fas fa-times"></i></a></td>
                                 </tr>
                                     
 
@@ -488,105 +352,154 @@ require 'CRUD/banco.php';
                             </div>
                              <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
                                            <div id="valores" style="text-align: right;" style="width: 80px">
-            
+                                               <span style="font-weight: bold;">ENTREGA: </span> 
+                                            <?php    
+                                               
+                                               $pdo = Banco::conectar();
+                                               $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                               $sql = "SELECT * FROM bairro where nome like ?";
+                                               $q = $pdo->prepare($sql);
+                                               $q->execute(array($data['bairro']));
+                                               $valor = $q->fetch(PDO::FETCH_ASSOC);
+                                               Banco::desconectar(); ?>
+                            
+                           
+                            <input type="text" id="frete"  value="R$ <?=number_format($valor['valorEntrega'],2,",","")?>"  style="width: 100px" onchange="calcular()" disabled="disabled">⠀⠀
+                            <span style="font-weight: bold;">SUBTOTAL: </span> 
+                            <input type="text" class="total-box" value="R$ <?=number_format($subtotal,2,",","") ?>" id="product-subtotal"  onchange="calcular()" style="width: 100px" disabled="disabled">⠀⠀
                                        <?php
-                                               $total = $subtotal -$data2['desconto'];
+                                               $total = $subtotal + $valor['valorEntrega'];
                                                ?>
                                                <span style="font-weight: bold;">TOTAL: </span> 
-           <input type="text" class="total-box"  value="R$ <?=number_format($total,2,",","")?>" id="order-total" disabled="disabled">
-            
+                                               <input type="text" class="total-box"  value="R$ <?=number_format($total,2,",","") ?>" id="order-total" disabled="disabled">
+
                                              </div>
 
+                            <br>
                             
-                                  <!-- Form Name -->
+ <!-- Dados do cliente e Atendimento  /////////////////////////-->     
+                            
+                          <h5>Dados do Cliente</h5>       
+                           <div class="form-row">
+                            <div class="col">
+                                <label class="col-md-10 control-label" for="nome">Nome : </label>
+                                <div class="col-md-10">
+                                    <input name="nome" value="<?=$data['nome']?>" type="text" placeholder="" class="form-control input-md">
 
-                          
-                            <h5>Atendimento</h5>
-                            <div class="form-row">
-                               <div class="col">
-                                   <div class="col-md-7">
-                                <div class="col-md-7">
-                                    <label class="control-label " for="nome_cliente">  Cliente: </label> <input  name="nome_cliente"  type="text" class="form-control input-md" required value="<?=$data2['cliente']?>"> </div>
-                               </div>
-                                
-                               </div>
+                                </div>
                             </div>
+                             
+
+                            <div class="col"  >
+                                <label class="col-md-10 control-label" for="telefone">Telefone : </label>
+                                <div class="col-md-10">
+                                    <input name="telefone" value="<?=$data['telefone']?>" type="text" placeholder="" class="form-control input-md telefone">
+
+                                </div>
+                            </div> 
+                               
+                               <div class="col"  >
+                                <div class="col-md-10">
+                                    <label class="control-label " for="endereco">  Endereço : </label>
+                                    <input id="logradouro" name="endereco" type="text" placeholder=""
+                                        class="form-control input-md" value="<?=$data['endereco']?>">
+                                </div>
+                            </div>
+                               
+                            </div>
+                             <input name="idCliente" hidden value="<?=$data['id']?>" type="text" placeholder="" class="form-control input-md telefone">
+                            <br>
+                             <div class="form-row">
+                            <div class="col" >
+                                <div class="col-md-10">
+                                    <label class="control-label" for="complemento">  Complemento : </label>
+                                    <input id="complemento" name="complemento" type="text" placeholder=""
+                                        class="form-control input-md" value="<?=$data['complemento']?>">
+                                </div>
+                            </div>
+                          <div class="col">
+                                <div class="col-md-10">
+                                    <label class="control-label " for="endereco">  Bairro : </label>
+                                    <input id="logradouro" name="bairro" type="text" placeholder=""
+                                        class="form-control input-md" value="<?=$data['bairro']?>">
+                                </div>
+                            </div>
+                             <div class="col">
+                                <div class="col-md-10">
+                                    <label class="control-label " for="endereco">  Refêrencia : </label>
+                                    <input id="logradouro" name="referencia" type="text" placeholder=""
+                                        class="form-control input-md" value="<?=$data['referencia']?>">
+                                </div>
+                            </div>
+                                 
+                                 
+                            </div>
+                            <br>
+                            <h5>Atendimento</h5>
                             
                            <div class="form-row">
-                               <input name="idPedido" hidden value="<?=$_REQUEST['idPed']?>" type="text"  >
-                               <input name="codigo" hidden value="<?=$_REQUEST['codigo']?>" type="number"  >
-                                <input name="idCliente" hidden value="<?=$id?>" type="text" placeholder="" class="form-control input-md telefone">
-                                
+                         <div class="col">
+                            
+                                <div class="col-md-10">
+                                    <label class="control-label " for="valor">  Valor da Entrega : </label>
+                                    <input id="logradouro" name="valor" type="text" placeholder=""
+                                        class="form-control input-md" value="<?=$valor['valorEntrega']?>" onKeyPress="return(moeda(this,'.',',',event))">
+                                </div>
+                            </div>  
+                            
                               <div class="col">
                                 <div class="col-md-10">
-                                    <label class="control-label " for="endereco">Consumo : </label>
-                                    <select  class="form-control" name="consumo"  id="exampleFormControlSelect1" placeholder="Pequisar" required>
-                                            <option value="">Selecionar...</option>
-                                             <option value="<?=$data2['consumo']?>"  selected><?=$data2['consumo']?> </option>
-                                            <option value="No Local" >No Local</option>
-                                            <option value="Para Levar" >Para Levar</option>
+                                    <label class="control-label " for="endereco">Atendente : </label>
+                                    <select  class="form-control" name="atendente"  id="exampleFormControlSelect1" placeholder="Pequisar" required>
+                                    <option value="">Selecionar Atendente...</option>
+                                        
+                                        
+                                               <?php
+                                    include_once 'CRUD/banco.php';
+                                    $pdo = Banco::conectar();
+                                    $sql = 'SELECT * FROM atendente';
+
+                                    foreach($pdo->query($sql)as $row)
+                                    { ?>
+                                            <option value="<?=$row['nome']?>"><?=$row['nome']?></option>
+
+                                        <?php }
+                                    Banco::desconectar();  ?>
                                     </select>
                                 </div>
                                </div>
-                            
-                           <div class="col">
+                                <div class="col">  
+                                                      
                                 <div class="col-md-10">
-                                    <label class="control-label " for="endereco">Atendente : </label>
-                                    <select  class="form-control" name="nome_atendente" value="<?=$data2['atendente']?>" id="exampleFormControlSelect1" placeholder="Pequisar" required>
-                                        
-                                       
-                                        <?php 
-                       
-                        include_once 'CRUD/banco.php';
-                        $pdo = Banco::conectar();
-                        $sql = 'SELECT * FROM atendente';
-                        
-                        foreach($pdo->query($sql)as $row)
-                        {
-                                         if($row['nome']==$data2['atendente']){
-                                             ?>
-                                          <option value="<?=$data2['atendente']?>" selected><?=$data2['atendente']?></option>
-                                        <?php
-                                         }
-                                        ?>
-                                       
-                                <option value="<?=$row['nome']?>"><?=$row['nome']?></option>
+                                    <label class="control-label " for="valor">  Desconto : </label> <input placeholder="R$" name="desconto" style="width: 170px" type="text" placeholder="" class="form-control input-md" onKeyPress="return(moeda(this,'.',',',event))"> </div>
+                               </div>
                               
-                  <?php }
-                        Banco::desconectar();  ?>
-                        </select>
-                                </div>
-                            </div>
-                              <div class="rol">
+                         <div class="rol">
                                 <div class="col-md-10">
                                     <label class="control-label " for="valor">  Troco para : </label>
                                     <input id="troco"  name="troco" type="text" 
-                                        class="form-control input-md" placeholder="R$" value="<?=$data2['troco']?>" onKeyPress="return(moeda(this,'.',',',event))">
+                                        class="form-control input-md" placeholder="R$"  onKeyPress="return(moeda(this,'.',',',event))">
                                 </div>
                             </div>
-                                     <div class="col">  
-                                                      
-                                <div class="col-md-10">
-                                    <label class="control-label " for="valor">  Desconto : </label> <input placeholder="R$" name="desconto" style="width: 170px" type="text" value="<?=$data2['desconto']?>" class="form-control input-md" onKeyPress="return(moeda(this,'.',',',event))"> </div>
-                </div>
                               <div class="rol">    
                              <div  class="col-md-10">
                                  <br>
-    <div class="chiller_cb">
-    <input id="myCheckbox" name="cartao" type="checkbox" >
-    <label for="myCheckbox" >Cartão de Crédito</label>
-    <span></span>
-  </div>
+                                <div class="chiller_cb">
+                                <input id="myCheckbox" name="cartao" type="checkbox" >
+                                <label for="myCheckbox" >Cartão de Crédito</label>
+                                <span></span>
+                              </div>
                                   </div>
-                               </div></div>
+                               </div>
+                              
+                            </div>
                             <br>
-                            
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="btnsalvar"></label>
-                                <div class="col-md-8">
+                                <label class="col-md-10 control-label" for="btnsalvar"></label>
+                                <div class="col-md-10">
                                     <button id="btnsalvar" type="submit" name="btnsalvar" class="btn btn-success" >Registrar Pedido e Baixar
                                     <i class="fas fa-print"></i></button>
-                                    <a id="btncancelar" href="pedido_recente_balcao.php"
+                                    <a id="btncancelar" href="pedido_recente.php"
                                         name="btncancelar" class="btn btn-secondary">Finalizar
                                     </a>
                                     
@@ -594,20 +507,16 @@ require 'CRUD/banco.php';
                             </div>          
                             
                 </fieldset>            
-</form>  
-      
-</div>
-                            
-        </div>
-        <!-- /.container-fluid -->
-
-      </div>
+              </form>  
  
-        
-    <?php
+              
+   <!-- Modais para editar a observação do lanche  /////////////////////////-->      
+              
+                </div>       
+                 <?php
                     include_once 'CRUD/banco.php';
                     $pdo = Banco::conectar();
-                    $sql = 'SELECT * FROM pedido_balcao';                                
+                    $sql = 'SELECT * FROM pedidoAtual';                                
                     foreach($pdo->query($sql) as $row1){ 
                         if($row1['idCliente']==$id){ ?>
 
@@ -622,7 +531,7 @@ require 'CRUD/banco.php';
         </button>
       </div>
       <div class="modal-body">
-        <form action="CRUD/update_pedido_balcao_anterior.php" method="post">
+        <form action="CRUD/update_pedido_atual.php" method="post">
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Quantidade:</label>
             <input style="width: 60px"  name="qtd" value="<?=$row1['qtd']?>" type="number" class="form-control" id="recipient-name">
@@ -633,54 +542,6 @@ require 'CRUD/banco.php';
           </div>
          <input  name="id" value="<?=$row1['id_individual']?>" type="hidden">
         <input  name="id_cliente" value="<?=$id?>" type="hidden">
-            <input  name="id_ped" value="<?=$idPed?>" type="hidden">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar </button>
-        <input type="submit" value="Atualizar" class="btn btn-success"/>
-     
-          </form>
-      </div>
-      <div class="modal-footer">
-        
-      </div>
-    </div>
-  </div>
-</div>
-    
-    
-    <?php }}?>
-    
-   
-        
-    <?php
-                    include_once 'CRUD/banco.php';
-                    $pdo = Banco::conectar();
-                    $sql = 'SELECT * FROM pedido_recente_balcao';                                
-                    foreach($pdo->query($sql) as $row1){ 
-                        if($row1['idCliente']==$id){ ?>
-
-                    
-             <div class="modal fade" id="editar_anterior<?=$row1['id_individual']?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Atualizar Lanche - <?=$row1['detalhes']?></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form action="CRUD/update_pedido_recente_balcao.php" method="post">
-          <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Quantidade:</label>
-            <input style="width: 60px"  name="qtd" value="<?=$row1['qtd']?>" type="number" class="form-control" id="recipient-name">
-          </div>
-          <div class="form-group">
-            <label for="message-text" class="col-form-label">Observação:</label>
-            <input  name="obs" value="<?=$row1['observacaoLanche']?>"  class="form-control" id="recipient-name">
-          </div>
-         <input  name="id" value="<?=$row1['id_individual']?>" type="hidden">
-        <input  name="id_cliente" value="<?=$id?>" type="hidden">
-            <input  name="id_ped" value="<?=$idPed?>" type="hidden">
             
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar </button>
         <input type="submit" value="Atualizar" class="btn btn-success"/>
@@ -696,7 +557,14 @@ require 'CRUD/banco.php';
     
     
     <?php }}?>
-     
+    
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+    
     </div>
     <!-- End of Content Wrapper -->
 
@@ -726,12 +594,7 @@ require 'CRUD/banco.php';
       </div>
     </div>
   </div>
-    
-    
 
-    
-    
-    
   <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -811,7 +674,8 @@ $('#my_form').submit(); // Submit form code
     
     </script>
       <script type='text/javascript' src='js/order.js'></script>
-             <script>
+    
+    <script>
    
         
     $(function () {
@@ -826,44 +690,44 @@ $('#my_form').submit(); // Submit form code
     });
 
     </script>
-       <script language="javascript">   
-                            function moeda(a, e, r, t) {
-                                let n = ""
-                                  , h = j = 0
-                                  , u = tamanho2 = 0
-                                  , l = ajd2 = ""
-                                  , o = window.Event ? t.which : t.keyCode;
-                                if (13 == o || 8 == o)
-                                    return !0;
-                                if (n = String.fromCharCode(o),
-                                -1 == "0123456789".indexOf(n))
-                                    return !1;
-                                for (u = a.value.length,
-                                h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++)
-                                    ;
-                                for (l = ""; h < u; h++)
+     <script language="javascript">   
+                                   function moeda(a, e, r, t) {
+                                    let n = ""
+                                    , h = j = 0
+                                    , u = tamanho2 = 0
+                                    , l = ajd2 = ""
+                                    , o = window.Event ? t.which : t.keyCode;
+                                       if (13 == o || 8 == o)
+                                           return !0;
+                                       if (n = String.fromCharCode(o),
+                                           -1 == "0123456789".indexOf(n))
+                                           return !1;
+                                       for (u = a.value.length,
+                                            h = 0; h < u && ("0" == a.value.charAt(h) || a.value.charAt(h) == r); h++);
+                                       for (l = ""; h < u; h++)
                                     -1 != "0123456789".indexOf(a.value.charAt(h)) && (l += a.value.charAt(h));
-                                if (l += n,
-                                0 == (u = l.length) && (a.value = ""),
-                                1 == u && (a.value = "0" + r + "0" + l),
-                                2 == u && (a.value = "0" + r + l),
-                                u > 2) {
-                                    for (ajd2 = "",
-                                    j = 0,
-                                    h = u - 3; h >= 0; h--)
-                                        3 == j && (ajd2 += e,
-                                        j = 0),
-                                        ajd2 += l.charAt(h),
-                                        j++;
-                                    for (a.value = "",
-                                    tamanho2 = ajd2.length,
-                                    h = tamanho2 - 1; h >= 0; h--)
-                                        a.value += ajd2.charAt(h);
-                                    a.value += r + l.substr(u - 2, u)
+                                       if (l += n,
+                                    0 == (u = l.length) && (a.value = ""),
+                                           1 == u && (a.value = "0" + r + "0" + l),
+                                           2 == u && (a.value = "0" + r + l),
+                                           u > 2) {
+                                        for (ajd2 = "",
+                                        j = 0,
+                                             h = u - 3; h >= 0; h--)
+                                            3 == j && (ajd2 += e,
+                                            j = 0),
+                                            ajd2 += l.charAt(h),
+                                                j++;
+                                        for (a.value = "",
+                                         tamanho2 = ajd2.length,
+                                         h = tamanho2 - 1; h >= 0; h--)
+                                            a.value += ajd2.charAt(h);
+                                           a.value += r + l.substr(u - 2, u)
                                 }
                                 return !1
                             }
                              </script> 
+                              
 </body>
 
 </html>

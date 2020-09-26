@@ -35,7 +35,7 @@
                 $q->execute(array($datahj,$idCliente, $idLanche, $obs, $lanche, $valor,$qtd));
                 Banco::desconectar(); 
 
-                 header ("Location: ../adicionarPedido.php?id=".$idCliente);
+                 header ("Location: ../adicionar_pedido.php?id=".$idCliente);
 
       }
         
@@ -66,9 +66,9 @@
                 $q->execute(array($datahj,$idCliente, $idLanche, $obs, $lanche, $valor,$qtd));
                 Banco::desconectar(); 
 
-                 header ("Location: ../adicionarPedido.php?id=".$idCliente);}
+                 header ("Location: ../adicionar_pedido.php?id=".$idCliente);}
         else{
             echo"<script>  alert('Codigo do produto não encontrado.');
-            window.location.replace('../adicionarPedido.php?id=".$idCliente."');</script>";
+            window.location.replace('../adicionar_pedido.php?id=".$idCliente."');</script>";
         }
     }

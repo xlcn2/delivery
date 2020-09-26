@@ -7,7 +7,7 @@
         if($_POST['codigo']=="" && $_POST['lanche']==""){
             
        echo"<script>  alert('Escolha ao menos um dos campos.');
-            window.location.replace('../pedidoAnterior.php?id=".$idCliente."&idPed=".$idPed."');</script>";
+            window.location.replace('../pedido_anterior.php?id=".$idCliente."&idPed=".$idPed."');</script>";
         
         }
         $teste =  $_POST['lanche'];
@@ -36,7 +36,7 @@
                 $q->execute(array($datahj,$idCliente, $idLanche, $obs, $lanche, $valor,$qtd));
                 Banco::desconectar(); 
 
-                 header ("Location: ../pedidoAnterior.php?id=".$idCliente."&idPed=".$idPed);
+                 header ("Location: ../pedido_anterior.php?id=".$idCliente."&idPed=".$idPed);
 
       }
         
@@ -67,9 +67,9 @@
                 $q->execute(array($datahj,$idCliente, $idLanche, $obs, $lanche, $valor,$qtd));
                 Banco::desconectar(); 
 
-                 header ("Location: ../pedidoAnterior.php?id=".$idCliente."&idPed=".$idPed);}
+                 header ("Location: ../pedido_anterior.php?id=".$idCliente."&idPed=".$idPed);}
         else{
             echo"<script>  alert('Codigo do produto não encontrado.');
-            window.location.replace('../pedidoAnterior.php?id=".$idCliente."&idPed=".$idPed."');</script>";
+            window.location.replace('../pedido_anterior.php?id=".$idCliente."&idPed=".$idPed."');</script>";
         }
     }

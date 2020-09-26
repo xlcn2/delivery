@@ -54,7 +54,7 @@ if (!isLoggedIn())
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <?php require_once "sidebar.php" ?>
+<?php require_once "sidebar.php" ?>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -75,6 +75,12 @@ if (!isLoggedIn())
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
+
+           
+
+          
+
+          
 
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
@@ -102,17 +108,61 @@ if (!isLoggedIn())
         <div class="container-fluid">
 
           <!-- Page Heading -->
-           <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Home</h1>
+           
+          </div>
+
+          <!-- Content Row -->
+            <div class="row">
+                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='painel_balcao.php'"><i class="fas fa-concierge-bell"></i> Balcão</button>
+                  <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='painel_delivery.php'"><i class="fas fa-hotdog"></i> Delivery</button>
+                   <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='painel_motoboy.php'"><i class="fas fa-clock"></i> Controle de Entrega </button>
+                   
+                </div>
+                        <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Gerenciar</h1>   
             </div>
             
             <div class="row">
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='pedidos_motoboy.php'">Pedidos     <i class="fas fa-hamburger" style="color: white"></i></button>
-                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='pedidos_concluidos.php'"> Pedidos Efetuados <i class="fas fa-user-check"></i></button>
-               
- 
+            
+                     <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='cliente.php'">Clientes <i class="fas fa-users"></i></button>
+                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='produto.php'"> Produtos <i class="fas fa-hotdog"></i></button>
+                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='categoria.php'">Categorias <i class="fas fa-list-alt"></i></button>
+                    <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='bairro.php'">Bairros <i class="fas fa-city"></i></button>
+                  <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='motoboy.php'"><i class="fas fa-motorcycle"></i> Motoboys </button>
+                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='atendente_balcao.php'"><i class="fas fa-users"></i> Atendentes Balcão</button>
+                <button type="button" class="btn bg-gray-800 text-gray-100 btMenu "  onclick="location.href='atendente.php'"><i class="fas fa-users"></i> Atendentes Delivery </button>
+           
+
+        
+
         </div>
+                    <div class="row">⠀⠀⠀⠀⠀⠀⠀⠀</div>
+        
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Rotina Diaria</h1>
+           
+          </div>
+            
+        <div class="row">
+              <button type="button" class="btn bg-gray-800 text-gray-100 btMenu"  onclick="location.href='relatorio.php'">Relatórios <i class="fas fa-chart-line"></i></button>
+           <?php if($data['status']=="Finalizado"){ ?>
+             <a class="btn bg-gray-800 text-gray-100 btMenu" href="#" data-toggle="modal" data-target="#reiniciarModal">
+                  Iniciar Expediente <i class="fas fa-clock"></i>
+                </a>
+            <?php }
+                else{
+            ?>
+            
+             <a style=" witdh: 400px" class="btn bg-gray-800 text-gray-100 btMenu" href="#" data-toggle="modal" data-target="#finalizarModal">
+                  Finalizar Expediente <i class="fas fa-clock"></i>
+                </a>
+            <?php } ?>
+            
+            </div>
+            
 
         <!-- /.container-fluid -->
       </div>
@@ -173,7 +223,9 @@ if (!isLoggedIn())
         </div>
       </div>
     </div>
-  </div>    
+  </div>
+      
+      
  <div class="modal fade" id="finalizarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
